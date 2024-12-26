@@ -31,7 +31,7 @@ public class App {
         //Parametros de conexao com o banco de dados
         String url = "jdbc:mysql://localhost:3306/teste";
         String usuario = "root";
-        String senha = "@2Darksouls3";
+        String senha = "12345678";
         // Estabelecer a conexao
         try {
             conexao = DriverManager.getConnection(url, usuario, senha);
