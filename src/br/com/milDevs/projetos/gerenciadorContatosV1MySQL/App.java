@@ -157,7 +157,8 @@ public class App {
         limparTela();
 
         //busca a pessoa especificada pelo id
-        Pessoa pessoa = encontrarContatoPorId(id);
+        //Pessoa pessoa = encontrarContatoPorId(id);
+        Pessoa pessoa = null;
 
         if (pessoa != null) {
 
@@ -213,16 +214,52 @@ public class App {
         int id = teclado.nextInt();
         teclado.nextLine(); // Consumir quebra de linha
 
-        //encontra o contato
-        Pessoa pessoa = encontrarContatoPorId(id);
+        Pessoa pessoa;
+
+        try {
+            pessoa = PessoaDAO.consultarPorID(id);
+
+            if (pessoa != null) {
+                System.out.println("Contato encontrado:");
+                System.out.println(pessoa);
+            } else {
+                System.out.println("Não existe contato com este ID.");
+                return;
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao consultar os dados no BD.");
+            System.out.println(e.getMessage());
+            return;
+        }
+
+        System.out.print("\nDeseja realmente excluir este contato " + pessoa.getNome() + " [s/n]: ");
+        char resposta = teclado.nextLine().toLowerCase().charAt(0);
+
+        if (resposta == 'n') {
+            System.out.println("\nExclusao cancelada.");
+            return;
+        }
+
+        try {
+            int resultado = PessoaDAO.excluirPorID(id);
+
+            if ( resultado == 0) {
+                System.out.println("Nenhum registro excluido pois nao existe esse ID no BD");
+            } else {
+                System.out.println("Registro excluido com sucesso.");
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir os dados no BD.");
+            System.out.println(e.getMessage());
+        }
 
         //excluir o contato
-        if (pessoa != null) {
+        /*if (pessoa != null) {
             listaContatos.remove(pessoa);
             System.out.println("Contato excluído com sucesso!");
         } else {
             System.out.println("Contato não encontrado.");
-        }
+        }*/
     }
 
     private static Pessoa encontrarContatoPorId(int id) {

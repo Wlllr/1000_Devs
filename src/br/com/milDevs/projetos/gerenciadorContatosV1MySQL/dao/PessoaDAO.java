@@ -83,4 +83,15 @@ public class PessoaDAO {
         }
         return lista;
     }
+
+    public static int excluirPorID(int id) throws SQLException{
+        String sql = "DELETE FROM pessoa WHERE id = ?";
+
+        try (PreparedStatement comando = conexao.prepareStatement(sql)) {
+            comando.setInt(1, id);
+            int resultado = comando.executeUpdate();
+
+            return resultado;
+        }
+    }
 }
