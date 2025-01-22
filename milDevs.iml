@@ -16,5 +16,18 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/commons-lang3-3.17.0/commons-lang3-3.17.0.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-lang3-3.17.0/commons-lang3-3.17.0-tests.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Downloads/commons-lang3-3.17.0/commons-lang3-3.17.0-sources.jar!/" />
+          <root url="jar://$USER_HOME$/Downloads/commons-lang3-3.17.0/commons-lang3-3.17.0-test-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

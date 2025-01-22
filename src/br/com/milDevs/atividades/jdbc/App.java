@@ -12,10 +12,10 @@ public class App {
 
         criarConexao();
         //inserir("Carla", "3499956232");
-        //deletar(4);
+        //deletar(8);
         //consultar();
         //update(3, "Carla Videiro", "34555555556");
-        consultar(2);
+        //consultar(2);
 
         if (conexao != null)
             try {
@@ -31,7 +31,7 @@ public class App {
         //Parametros de conexao com o banco de dados
         String url = "jdbc:mysql://localhost:3306/teste";
         String usuario = "root";
-        String senha = "12345678";
+        String senha = "1234567";
         // Estabelecer a conexao
         try {
             conexao = DriverManager.getConnection(url, usuario, senha);
