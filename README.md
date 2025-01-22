@@ -5,6 +5,7 @@ O 1000 Devs - Talentos Para o Bem é um programa de capacitação promovido pela
 Com foco em Java e Desenvolvimento Backend, o programa oferece uma trilha de aprendizado abrangente que inclui:
 
     Fundamentos de programação.
+    Orientação à Objetos.
     Estruturas de dados e algoritmos.
     Desenvolvimento Web com ênfase em APIs RESTful.
     Padrões de projetos.
