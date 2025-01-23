@@ -23,6 +23,13 @@ public class Pessoa {
         setEmail(email);
     }
 
+    public Pessoa(int id, String nome, ArrayList<Telefone> telefones, String email) {
+        setId(id);
+        setNome(nome);
+        setTelefones(telefones);
+        setEmail(email);
+    }
+
     private void setId(int id) {
         this.id = id;
     }

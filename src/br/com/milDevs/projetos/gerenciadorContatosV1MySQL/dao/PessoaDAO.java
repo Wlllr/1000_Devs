@@ -32,7 +32,7 @@ public class PessoaDAO {
                 lista.add(new Pessoa(
                         resultado.getInt("id"),
                         resultado.getString("nome"),
-                        resultado.getString("telefone"),
+                        TelefoneDAO.consultarPorId(resultado.getInt("id")),
                         resultado.getString("email")));
             }
         }
@@ -53,7 +53,7 @@ public class PessoaDAO {
                 pessoa = new Pessoa(
                         resultado.getInt("id"),
                         resultado.getString("nome"),
-                        resultado.getString("telefone"),
+                        TelefoneDAO.consultarPorId(resultado.getInt("id")),
                         resultado.getString("email")
                 );
             }
@@ -75,7 +75,7 @@ public class PessoaDAO {
                     lista.add(new Pessoa(
                             resultado.getInt("id"),
                             resultado.getString("nome"),
-                            resultado.getString("telefone"),
+                            TelefoneDAO.consultarPorId(resultado.getInt("id")),
                             resultado.getString("email")
                     ));
                 }

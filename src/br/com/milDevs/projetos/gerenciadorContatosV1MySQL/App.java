@@ -1,7 +1,9 @@
 package br.com.milDevs.projetos.gerenciadorContatosV1MySQL;
 
 import br.com.milDevs.projetos.gerenciadorContatosV1MySQL.dao.PessoaDAO;
+import br.com.milDevs.projetos.gerenciadorContatosV1MySQL.dao.TelefoneDAO;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.io.IOException;
@@ -13,7 +15,11 @@ public class App {
 
     public static void main(String[] args) {
         try {
-            PessoaDAO.conexao = Conexao.getConexao();
+            Connection conexao = Conexao.getConexao();
+
+            PessoaDAO.conexao = conexao;
+            TelefoneDAO.conexao = conexao;
+
         } catch (Exception e) {
             e.printStackTrace();
             return;
