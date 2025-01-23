@@ -1,9 +1,12 @@
 package br.com.milDevs.projetos.gerenciadorContatosV1MySQL;
 
+import java.util.ArrayList;
+
 public class Pessoa {
     private int id;
     private String nome;
     private String telefone;
+    private ArrayList<Telefone> telefones = new ArrayList<>();
     private String email;
 
     //construtor da classe pessoa
@@ -58,11 +61,19 @@ public class Pessoa {
         return email;
     }
 
+    public ArrayList<Telefone> getTelefones() {
+        return telefones;
+    }
+
+    public void setTelefones(ArrayList<Telefone> telefones) {
+        this.telefones = telefones;
+    }
+
     //cria o método to string utilizado para converter o objeto para string
     //quando for necessário imprimir os dados do objeto na tela por outra parte do nosso
     //programa
     @Override
     public String toString() {
-        return "ID: " + id + ", Nome: " + nome + ", Telefone: " + telefone + ", Email: " + email;
+        return "ID: " + id + ", Nome: " + nome + ", Telefone: " + telefone + " - " + telefones +  ", Email: " + email;
     }
 }
