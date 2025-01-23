@@ -94,4 +94,18 @@ public class PessoaDAO {
             return resultado;
         }
     }
+
+    public static int atualizarContatoPorID(Pessoa pessoa) throws SQLException{
+        String sql = "UPDATE pessoa SET nome = ?, email = ?, telefone = ? WHERE id = ?";
+
+        try (PreparedStatement comando = conexao.prepareStatement(sql)) {
+            comando.setString(1, pessoa.getNome());
+            comando.setString(2, pessoa.getEmail());
+            comando.setString(3, pessoa.getTelefone());
+            comando.setInt(4, pessoa.getId());
+
+            int resultado = comando.executeUpdate();
+            return resultado;
+        }
+    }
 }

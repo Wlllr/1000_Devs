@@ -8,12 +8,11 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class App {
-    private static ArrayList<Pessoa> listaContatos = new ArrayList<Pessoa>();
+
     private static Scanner teclado = new Scanner(System.in);
 
     public static void main(String[] args) {
         try {
-            /*PessoaDAO.getConexao();*/
             PessoaDAO.conexao = Conexao.getConexao();
         } catch (Exception e) {
             e.printStackTrace();
@@ -88,17 +87,17 @@ public class App {
 
     private static void consultarContatosPorNome() {
         String nome;
-        ArrayList<Pessoa> contatos = new ArrayList<Pessoa>();
+        ArrayList<Pessoa> listaContatos = new ArrayList<Pessoa>();
 
         System.out.print("Informe o nome ou parte do nome usuario a ser exibido:  ");
         nome = teclado.nextLine();
 
         try {
-            contatos = PessoaDAO.consultarPorNome(nome);
-            if (contatos.isEmpty()){
+            listaContatos = PessoaDAO.consultarPorNome(nome);
+            if (listaContatos.isEmpty()){
                 System.out.println("Não existe contato com este nome.");
             } else {
-                for (Pessoa cadaContato : contatos) {
+                for (Pessoa cadaContato : listaContatos) {
                     System.out.println(cadaContato);
                 }
             }
@@ -139,7 +138,7 @@ public class App {
         String email = teclado.nextLine();
 
         Pessoa novaPessoa = new Pessoa(nome, telefone, email);
-        //listaContatos.add(novaPessoa);
+
         try {
             PessoaDAO.inserir(novaPessoa);
             System.out.println("Contato incluído com sucesso!");
@@ -156,48 +155,74 @@ public class App {
 
         limparTela();
 
-        //busca a pessoa especificada pelo id
-        //Pessoa pessoa = encontrarContatoPorId(id);
         Pessoa pessoa = null;
 
-        if (pessoa != null) {
-
-            System.out.print("Digite o novo nome (ou deixe em branco para manter): ");
-            String nome = teclado.nextLine();
-            //metodo isBlank retorna true se a string estiver vazia
-            //é equivalente a fazer nome.equals("");
-            if (!nome.isBlank())
-                pessoa.setNome(nome);
-
-            System.out.print("Digite o novo telefone (ou deixe em branco para manter): ");
-            String telefone = teclado.nextLine();
-            if (!telefone.isBlank())
-                pessoa.setTelefone(telefone);
-
-            System.out.print("Digite o novo email (ou deixe em branco para manter): ");
-            String email = teclado.nextLine();
-            if (!email.isBlank())
-                pessoa.setEmail(email);
-
-            System.out.println("Contato alterado com sucesso!");
-        } else {
-            System.out.println("Contato não encontrado.");
-            pausa();
+        try {
+            pessoa = PessoaDAO.consultarPorID(id);
+            if (pessoa != null){
+                System.out.println(pessoa);
+            } else {
+                System.out.println("Não existe contato com este ID.");
+                return;
+            }
+        } catch (SQLException e) {
+            System.out.println("Error ao consultador os dados no banco de dados!");
+            System.out.println(e.getMessage());
+            return;
         }
+
+        System.out.print("\nDeseja realmente alterar este contato " + pessoa.getNome() + " [s/n]");
+        char resposta = teclado.nextLine().toLowerCase().charAt(0);
+
+        if (resposta == 'n') {
+            System.out.println("\nAtualização cancelada.");
+            return;
+        }
+
+        System.out.println("Nome atual: " + pessoa.getNome());
+        System.out.print("Digite o novo nome (ou deixe em branco para manter): ");
+        String nome = teclado.nextLine();
+        //metodo isBlank retorna true se a string estiver vazia
+        //é equivalente a fazer nome.equals("");
+        if (!nome.isBlank())
+            pessoa.setNome(nome);
+
+        System.out.println("Telefone atual: " + pessoa.getTelefone());
+        System.out.print("Digite o novo telefone (ou deixe em branco para manter): ");
+        String telefone = teclado.nextLine();
+        if (!telefone.isBlank())
+            pessoa.setTelefone(telefone);
+
+        System.out.println("Email atual: " + pessoa.getEmail());
+        System.out.print("Digite o novo email (ou deixe em branco para manter): ");
+        String email = teclado.nextLine();
+        if (!email.isBlank())
+            pessoa.setEmail(email);
+
+        try {
+            int resultado = PessoaDAO.atualizarContatoPorID(pessoa);
+
+            String mensagem = (resultado > 0) ? "Contato alterado com sucesso!" : " Erro!";
+            System.out.println(mensagem);
+        } catch (SQLException e) {
+            System.out.println("Erro ao entar atualizar os dados no BD. Tente novamente.");
+            System.out.println(e.getMessage());
+        }
+        pausa();
     }
 
     private static void consultarContatos() {
-        ArrayList<Pessoa> contatos = new ArrayList<Pessoa>();
+        ArrayList<Pessoa> listaContatos = new ArrayList<Pessoa>();
 
         try {
-            contatos = PessoaDAO.consultarTodosContatos();
+            listaContatos = PessoaDAO.consultarTodosContatos();
 
             //metodo isEmpty verifica se a lista esta vazia
-            if (contatos.isEmpty()) {
+            if (listaContatos.isEmpty()) {
                 System.out.println("Nenhum contato cadastrado.");
             } else {
                 System.out.println("\n--- Lista de Contatos ---");
-                for (Pessoa pessoa : contatos) {
+                for (Pessoa pessoa : listaContatos) {
                     System.out.println(pessoa);
                 }
             }
@@ -253,27 +278,7 @@ public class App {
             System.out.println(e.getMessage());
         }
 
-        //excluir o contato
-        /*if (pessoa != null) {
-            listaContatos.remove(pessoa);
-            System.out.println("Contato excluído com sucesso!");
-        } else {
-            System.out.println("Contato não encontrado.");
-        }*/
     }
-
-    private static Pessoa encontrarContatoPorId(int id) {
-        //varre o array list para encontrar o id pesquisado
-        for (Pessoa pessoa : listaContatos) {
-            if (pessoa.getId() == id) {
-                //encontrou retorna o objeto pessoa
-                return pessoa;
-            }
-        }
-        //se chegou até aqui não existe este id
-        return null;
-    }
-
 
     private static void limparTela(){
         try {
