@@ -8,15 +8,32 @@ public class PessoaDAO {
     public static Connection conexao = null;
 
     public static void inserir(Pessoa pessoa) throws SQLException{
-        String sql = "INSERT INTO pessoa (nome, email, telefone) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO pessoa (nome, email) VALUES (?, ?)";
 
         //try with resources
-        try(PreparedStatement comando = conexao.prepareStatement(sql)) {
+        try(PreparedStatement comando = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             comando.setString(1, pessoa.getNome());
             comando.setString(2, pessoa.getEmail());
-            comando.setString(3, pessoa.getTelefone());
+            //comando.setString(3, pessoa.getTelefone());
 
-            comando.executeUpdate();
+            conexao.setAutoCommit(false);
+
+            int qtdLinhas = comando.executeUpdate();
+
+            if (qtdLinhas > 0) {
+                try (ResultSet idGerado = comando.getGeneratedKeys()) {
+                    if (idGerado.next()) {
+                        TelefoneDAO.inserir(idGerado.getInt(1), pessoa.getTelefones());
+                    }
+
+                    conexao.commit();
+                } catch (SQLException e) {
+                    conexao.rollback();
+                    throw e;
+                } finally {
+                    conexao.setAutoCommit(true);
+                }
+            }
         }
     }
 

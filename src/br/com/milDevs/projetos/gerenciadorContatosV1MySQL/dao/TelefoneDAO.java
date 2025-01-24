@@ -24,9 +24,23 @@ public class TelefoneDAO {
                 telefones.add(new Telefone(
                         resultado.getString("ddd"),
                         resultado.getString("numero"),
-                        Telefone.Tipo.CELULAR));
+                        Telefone.Tipo.valueOf(resultado.getString("tipo"))));
             }
             return telefones;
+        }
+    }
+
+    public static void inserir(int id, ArrayList<Telefone> telefones) throws SQLException{
+        String sql = "INSERT INTO telefones (id_pessoa, ddd, numero, tipo) VALUES (?, ?, ?, ?)";
+
+        for (Telefone cadaTelefone : telefones) {
+            try (PreparedStatement comando = conexao.prepareStatement(sql)) {
+                comando.setInt(1, id);
+                comando.setString(2, cadaTelefone.getDdd());
+                comando.setString(3, cadaTelefone.getNumero());
+                comando.setString(4, cadaTelefone.getTipo().toString());
+                comando.executeUpdate();
+            }
         }
     }
 }

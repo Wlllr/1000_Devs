@@ -137,13 +137,12 @@ public class App {
         System.out.print("Digite o nome: ");
         String nome = teclado.nextLine();
 
-        System.out.print("Digite o telefone: ");
-        String telefone = teclado.nextLine();
-
         System.out.print("Digite o email: ");
         String email = teclado.nextLine();
 
-        Pessoa novaPessoa = new Pessoa(nome, telefone, email);
+        ArrayList<Telefone> telefones = obterTelefones();
+
+        Pessoa novaPessoa = new Pessoa(nome, telefones, email);
 
         try {
             PessoaDAO.inserir(novaPessoa);
@@ -152,6 +151,31 @@ public class App {
             System.out.println("Erro ao entar inserir os dados no BD. Tente novamente.");
             System.out.println(e.getMessage());
         }
+    }
+
+    private static ArrayList<Telefone> obterTelefones() {
+        ArrayList<Telefone> telefones = new ArrayList<>();
+        String numero, ddd, tipo;
+        char resposta;
+
+        do {
+            System.out.print("Digite o ddd: ");
+            ddd = teclado.nextLine();
+
+            System.out.print("Digite o telefone: ");
+            numero = teclado.nextLine();
+
+            System.out.print("Digite o tipo [CELULAR/FIXO]: ");
+            tipo = teclado.nextLine().toUpperCase();
+
+            telefones.add(new Telefone(ddd, numero, Telefone.Tipo.valueOf(tipo)));
+
+            System.out.println("Deseja cadastrar outro telefone [s/n]: ");
+            resposta = teclado.nextLine().toLowerCase().charAt(0);
+
+        } while (resposta == 's');
+
+        return telefones;
     }
 
     private static void alterarContato() {

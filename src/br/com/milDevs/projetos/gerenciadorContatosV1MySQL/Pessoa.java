@@ -10,6 +10,12 @@ public class Pessoa {
     private String email;
 
     //construtor da classe pessoa
+    public Pessoa(String nome, ArrayList<Telefone> telefones, String email) {
+        setNome(nome);
+        setTelefones(telefones);
+        setEmail(email);
+    }
+
     public Pessoa(String nome, String telefone, String email) {
         setNome(nome);
         setTelefone(telefone);
