@@ -105,10 +105,20 @@ public class PessoaDAO {
         String sql = "DELETE FROM pessoa WHERE id = ?";
 
         try (PreparedStatement comando = conexao.prepareStatement(sql)) {
+            conexao.setAutoCommit(false);
+            TelefoneDAO.excluirPorId(id);
+
             comando.setInt(1, id);
             int resultado = comando.executeUpdate();
 
+            conexao.commit();
+
             return resultado;
+        } catch (Exception e) {
+            conexao.rollback();
+            throw e;
+        } finally {
+            conexao.setAutoCommit(true);
         }
     }
 

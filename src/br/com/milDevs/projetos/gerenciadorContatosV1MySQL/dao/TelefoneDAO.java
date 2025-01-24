@@ -43,4 +43,13 @@ public class TelefoneDAO {
             }
         }
     }
+
+    public static void excluirPorId(int id) throws SQLException{
+        String sql = "DELETE FROM telefones WHERE id_pessoa = ?";
+
+        try (PreparedStatement comando = conexao.prepareStatement(sql)) {
+            comando.setInt(1, id);
+            comando.executeUpdate();
+        }
+    }
 }
